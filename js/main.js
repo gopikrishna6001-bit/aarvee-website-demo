@@ -36,6 +36,162 @@
     });
   });
 
+
+  /* Timed hero slides + collapsible story video */
+  (() => {
+    const root = document.querySelector('[data-hero]');
+    if (!root) return;
+
+    const slides = [...root.querySelectorAll('[data-hero-slide]')];
+    const thumbs = [...root.querySelectorAll('[data-hero-goto]')];
+    const titleEl = root.querySelector('[data-hero-title]');
+    const ledeEl = root.querySelector('[data-hero-lede]');
+    const story = root.querySelector('[data-hero-story]');
+    const storyVideo = root.querySelector('[data-hero-story-video]');
+    const storyTag = root.querySelector('[data-hero-story-tag]');
+    const storyTitle = root.querySelector('[data-hero-story-title]');
+    const DURATION = 6000;
+    root.style.setProperty('--hero-duration', `${DURATION}ms`);
+
+    const COPY = [
+      {
+        title: 'Engineering infrastructure for nations & generations.',
+        lede: 'Technically robust design and end-to-end project management across railways, roads, water, ports and urban systems — engineered to perform on site.',
+        tag: 'Rail & Metro',
+        story: 'Corridors that carry nations',
+      },
+      {
+        title: 'Highways and bridges built to be delivered.',
+        lede: 'From metropolitan ring roads to long-span crossings — design that survives site reality and contract discipline.',
+        tag: 'Highways & Bridges',
+        story: 'Systems that move cities',
+      },
+      {
+        title: 'Ports and logistics that keep trade flowing.',
+        lede: 'Deep-water berths, terminals and multimodal links engineered for operational reliability.',
+        tag: 'Ports & Logistics',
+        story: 'Gateways for national trade',
+      },
+      {
+        title: 'Power infrastructure that endures.',
+        lede: 'Transmission, renewables and energy systems shaped by multidisciplinary engineering judgement.',
+        tag: 'Power & Renewables',
+        story: 'Energy that connects futures',
+      },
+    ];
+
+    let index = 0;
+    let timer = null;
+    let storyOpen = false;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const setSlide = (i, { restart = true } = {}) => {
+      index = (i + slides.length) % slides.length;
+      slides.forEach((slide, n) => {
+        const on = n === index;
+        slide.classList.toggle('is-active', on);
+        slide.hidden = !on;
+      });
+      thumbs.forEach((thumb, n) => {
+        const on = n === index;
+        thumb.classList.toggle('is-active', on);
+        thumb.setAttribute('aria-selected', String(on));
+        const bar = thumb.querySelector('.hero-thumb-progress i');
+        if (bar) {
+          bar.style.animation = 'none';
+          // reflow to restart CSS animation
+          void bar.offsetWidth;
+          if (on && restart && !storyOpen && !reduceMotion) {
+            bar.style.animation = '';
+          }
+        }
+      });
+      const copy = COPY[index];
+      if (titleEl) titleEl.innerHTML = copy.title;
+      if (ledeEl) ledeEl.textContent = copy.lede;
+      if (restart && !storyOpen && !reduceMotion) armTimer();
+    };
+
+    const armTimer = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => setSlide(index + 1), DURATION);
+    };
+
+    const pause = () => {
+      clearTimeout(timer);
+      root.classList.add('is-paused');
+    };
+    const resume = () => {
+      root.classList.remove('is-paused');
+      if (!storyOpen && !reduceMotion) armTimer();
+      // restart progress visual
+      const bar = thumbs[index]?.querySelector('.hero-thumb-progress i');
+      if (bar && !reduceMotion) {
+        bar.style.animation = 'none';
+        void bar.offsetWidth;
+        bar.style.animation = '';
+      }
+    };
+
+    const openStory = () => {
+      const slide = slides[index];
+      const copy = COPY[index];
+      const src = slide?.dataset.video || '';
+      if (!story || !storyVideo || !src) return;
+      pause();
+      storyOpen = true;
+      story.hidden = false;
+      if (storyTag) storyTag.textContent = copy.tag;
+      if (storyTitle) storyTitle.textContent = copy.story;
+      storyVideo.poster = slide.querySelector('img')?.src || '';
+      storyVideo.src = src;
+      storyVideo.currentTime = 0;
+      storyVideo.play?.().catch(() => {});
+      root.querySelector('[data-hero-story-close]')?.focus();
+    };
+
+    const closeStory = () => {
+      if (!story) return;
+      storyOpen = false;
+      story.hidden = true;
+      if (storyVideo) {
+        storyVideo.pause?.();
+        storyVideo.removeAttribute('src');
+        storyVideo.load?.();
+      }
+      resume();
+    };
+
+    root.querySelector('[data-hero-watch]')?.addEventListener('click', openStory);
+    root.querySelector('[data-hero-story-close]')?.addEventListener('click', closeStory);
+    story?.addEventListener('click', (e) => {
+      if (e.target === story) closeStory();
+    });
+    root.querySelector('[data-hero-prev]')?.addEventListener('click', () => {
+      closeStory();
+      setSlide(index - 1);
+    });
+    root.querySelector('[data-hero-next]')?.addEventListener('click', () => {
+      closeStory();
+      setSlide(index + 1);
+    });
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        closeStory();
+        setSlide(Number(thumb.dataset.heroGoto || 0));
+      });
+    });
+
+    root.addEventListener('mouseenter', () => { if (!storyOpen) pause(); });
+    root.addEventListener('mouseleave', () => { if (!storyOpen) resume(); });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && storyOpen) closeStory();
+    });
+
+    setSlide(0);
+  })();
+
   try {
   // Project spotlights
   const stageImgs = [...document.querySelectorAll('[data-spotlight-image]')];
