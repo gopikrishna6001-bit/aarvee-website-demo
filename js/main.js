@@ -50,33 +50,103 @@
     const storyVideo = root.querySelector('[data-hero-story-video]');
     const storyTag = root.querySelector('[data-hero-story-tag]');
     const storyTitle = root.querySelector('[data-hero-story-title]');
-    const DURATION = 6000;
+    const DURATION = 6500;
     root.style.setProperty('--hero-duration', `${DURATION}ms`);
+    const indexEl = root.querySelector('[data-hero-index]');
+    const metricValues = [...root.querySelectorAll('[data-metric-value]')];
+    const metricLabels = [...root.querySelectorAll('[data-metric-label]')];
+
+    const formatNum = (n, format) => {
+      if (format === 'km') return Math.round(n).toLocaleString('en-IN');
+      return Math.round(n).toLocaleString('en-IN');
+    };
+
+    const animateMetric = (el, to, suffix, format, duration = 900) => {
+      const start = performance.now();
+      const from = 0;
+      const tick = (now) => {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const val = from + (to - from) * eased;
+        el.textContent = formatNum(val, format) + (suffix || '');
+        if (t < 1) requestAnimationFrame(tick);
+        else el.textContent = formatNum(to, format) + (suffix || '');
+      };
+      requestAnimationFrame(tick);
+    };
+
+    const applyMetrics = (metrics) => {
+      metrics.forEach((m, i) => {
+        const el = metricValues[i];
+        const label = metricLabels[i];
+        if (!el) return;
+        const parent = el.closest('.hero-metric');
+        parent?.classList.remove('is-swap');
+        void parent?.offsetWidth;
+        parent?.classList.add('is-swap');
+        if (label) label.textContent = m.label;
+        if (m.text) {
+          el.textContent = m.text;
+          return;
+        }
+        if (reduceMotion) el.textContent = formatNum(m.to, m.format) + (m.suffix || '');
+        else animateMetric(el, m.to, m.suffix || '', m.format || 'int');
+      });
+    };
+
 
     const COPY = [
       {
-        title: 'Engineering infrastructure for nations & generations.',
-        lede: 'Technically robust design and end-to-end project management across railways, roads, water, ports and urban systems — engineered to perform on site.',
+        title: 'Engineering infrastructure for nations &amp; generations.',
+        lede: 'Technically robust design and end-to-end project management — engineered to perform on site.',
         tag: 'Rail & Metro',
         story: 'Corridors that carry nations',
+        index: '01 / 04 · Rail',
+        metrics: [
+          { to: 4000, suffix: '+', label: 'Employees' },
+          { to: 35, suffix: '+', label: 'Years' },
+          { to: 20, suffix: '+', label: 'Countries' },
+          { to: 20000, suffix: ' km', label: 'Railway lines designed', format: 'km' },
+        ],
       },
       {
         title: 'Highways and bridges built to be delivered.',
-        lede: 'From metropolitan ring roads to long-span crossings — design that survives site reality and contract discipline.',
+        lede: 'From metropolitan ring roads to long-span crossings — design that survives site reality.',
         tag: 'Highways & Bridges',
         story: 'Systems that move cities',
+        index: '02 / 04 · Highways',
+        metrics: [
+          { to: 4000, suffix: '+', label: 'Employees' },
+          { to: 35, suffix: '+', label: 'Years' },
+          { to: 20, suffix: '+', label: 'Countries' },
+          { text: 'ORR', label: 'Hyderabad Outer Ring Road · Detailed Design' },
+        ],
       },
       {
         title: 'Ports and logistics that keep trade flowing.',
         lede: 'Deep-water berths, terminals and multimodal links engineered for operational reliability.',
         tag: 'Ports & Logistics',
         story: 'Gateways for national trade',
+        index: '03 / 04 · Ports',
+        metrics: [
+          { to: 4000, suffix: '+', label: 'Employees' },
+          { to: 35, suffix: '+', label: 'Years' },
+          { to: 20, suffix: '+', label: 'Countries' },
+          { text: 'Ports', label: 'Vizag · Kandla · Krishnapatnam programmes' },
+        ],
       },
       {
-        title: 'Water and irrigation at national scale.',
-        lede: 'Lift irrigation and multipurpose systems — engineering that feeds regions and cities.',
+        title: 'Water systems that feed regions and cities.',
+        lede: 'Lift irrigation and multipurpose programmes shaped by multidisciplinary judgement.',
         tag: 'Irrigation & Water',
         story: 'Water systems that endure',
+        index: '04 / 04 · Water',
+        metrics: [
+          { to: 4000, suffix: '+', label: 'Employees' },
+          { to: 35, suffix: '+', label: 'Years' },
+          { to: 20, suffix: '+', label: 'Countries' },
+          { text: 'Lift', label: 'Kaleshwaram · basin-scale irrigation' },
+        ],
       },
     ];
 
@@ -109,6 +179,8 @@
       const copy = COPY[index];
       if (titleEl) titleEl.innerHTML = copy.title;
       if (ledeEl) ledeEl.textContent = copy.lede;
+      if (indexEl) indexEl.textContent = copy.index || '';
+      if (copy.metrics) applyMetrics(copy.metrics);
       if (restart && !storyOpen && !reduceMotion) armTimer();
     };
 
