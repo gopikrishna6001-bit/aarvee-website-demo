@@ -206,33 +206,25 @@
     };
 
     const storyFrame = root.querySelector('[data-hero-story-frame]');
+    const storyPanel = root.querySelector('.hero-story-panel');
+    const HERO_REEL_ID = 'DVgR_j_D9HD';
+    const HERO_REEL_EMBED = 'https://www.instagram.com/reel/DVgR_j_D9HD/embed';
     const openStory = () => {
-      const slide = slides[index];
       const copy = COPY[index];
-      const yt = slide?.dataset.youtube || '';
-      const src = slide?.dataset.video || '';
-      if (!story) return;
-      if (!yt && !src) return;
+      if (!story || !storyFrame) return;
       pause();
       storyOpen = true;
       story.hidden = false;
-      if (storyTag) storyTag.textContent = copy.tag;
-      if (storyTitle) storyTitle.textContent = copy.story;
-      if (yt && storyFrame) {
-        if (storyVideo) storyVideo.hidden = true;
-        storyFrame.hidden = false;
-        storyFrame.src = `https://www.youtube.com/embed/${yt}?autoplay=1&rel=0`;
-      } else if (storyVideo && src) {
-        if (storyFrame) {
-          storyFrame.hidden = true;
-          storyFrame.src = '';
-        }
-        storyVideo.hidden = false;
-        storyVideo.poster = slide.querySelector('img')?.src || '';
-        storyVideo.src = src;
-        storyVideo.currentTime = 0;
-        storyVideo.play?.().catch(() => {});
-      }
+      story.classList.add('is-reel');
+      storyPanel?.classList.add('is-reel');
+      if (storyTag) storyTag.textContent = 'Instagram · @aarvee_engg';
+      if (storyTitle) storyTitle.textContent = copy.story || 'Aarvee story';
+      if (storyVideo) storyVideo.hidden = true;
+      storyFrame.hidden = false;
+      storyFrame.title = 'Aarvee Instagram Reel';
+      storyFrame.src = HERO_REEL_EMBED;
+      const openLink = story.querySelector('[data-hero-story-ig]');
+      if (openLink) openLink.href = 'https://www.instagram.com/reel/' + HERO_REEL_ID + '/';
       root.querySelector('[data-hero-story-close]')?.focus();
     };
 
@@ -240,6 +232,8 @@
       if (!story) return;
       storyOpen = false;
       story.hidden = true;
+      story.classList.remove('is-reel');
+      storyPanel?.classList.remove('is-reel');
       if (storyFrame) storyFrame.src = '';
       if (storyVideo) {
         storyVideo.pause?.();
