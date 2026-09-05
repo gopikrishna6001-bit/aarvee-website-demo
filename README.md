@@ -1,5 +1,17 @@
 # Aarvee website
 
+## Public demo URL
+
+Share this link (GitHub Pages):
+
+**https://gopikrishna6001-bit.github.io/aarvee-website-demo/**
+
+Repo: https://github.com/gopikrishna6001-bit/aarvee-website-demo
+
+After local edits, publish with:
+```bash
+git add -A && git commit -m "Update demo" && git push
+```
 ## Protected in git
 
 The site is **committed on `main`** so Cursor workspace moves cannot wipe it as untracked files again.
