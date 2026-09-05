@@ -102,6 +102,7 @@
         tag: 'Rail & Metro',
         story: 'Corridors that carry nations',
         index: '01 / 04 · Rail',
+        youtubeId: 'Iea1lrfk19I',
         metrics: [
           { to: 4000, suffix: '+', label: 'Employees' },
           { to: 35, suffix: '+', label: 'Years' },
@@ -115,6 +116,7 @@
         tag: 'Highways & Bridges',
         story: 'Systems that move cities',
         index: '02 / 04 · Highways',
+        youtubeId: '_qDLPHb4kiM',
         metrics: [
           { to: 4000, suffix: '+', label: 'Employees' },
           { to: 35, suffix: '+', label: 'Years' },
@@ -128,6 +130,7 @@
         tag: 'Ports & Logistics',
         story: 'Gateways for national trade',
         index: '03 / 04 · Ports',
+        youtubeId: 'C64HADDvgs0',
         metrics: [
           { to: 4000, suffix: '+', label: 'Employees' },
           { to: 35, suffix: '+', label: 'Years' },
@@ -141,6 +144,7 @@
         tag: 'Irrigation & Water',
         story: 'Water systems that endure',
         index: '04 / 04 · Water',
+        youtubeId: '7_K2m5jzjp0',
         metrics: [
           { to: 4000, suffix: '+', label: 'Employees' },
           { to: 35, suffix: '+', label: 'Years' },
@@ -206,26 +210,21 @@
     };
 
     const storyFrame = root.querySelector('[data-hero-story-frame]');
-    const HERO_REEL_URL = 'https://www.instagram.com/reel/DVgR_j_D9HD/';
-    const HERO_REEL_EMBED = 'https://www.instagram.com/reel/DVgR_j_D9HD/embed/?cr=1&v=14&wp=400';
+    // Sector films from Aarvee YouTube — plays on the website (same as Proof media)
     const openStory = () => {
+      const slide = slides[index];
       const copy = COPY[index];
-      if (!story) return;
+      const yt = (slide && slide.dataset.youtube) || (copy && copy.youtubeId) || '';
+      if (!story || !storyFrame || !yt) return;
       pause();
       storyOpen = true;
       root.classList.add('story-open');
       story.hidden = false;
-      if (storyTag) storyTag.textContent = 'Instagram · @aarvee_engg';
+      if (storyTag) storyTag.textContent = (copy && copy.tag) || 'Story film';
       if (storyTitle) storyTitle.textContent = (copy && copy.story) || 'Aarvee story';
-      const ig = story.querySelector('[data-hero-story-ig]');
-      if (ig) ig.href = HERO_REEL_URL;
-      // Instagram often plays audio in iframes while hiding video — open the real reel,
-      // and still mount the embed for viewers where Instagram allows it.
-      if (storyFrame) {
-        storyFrame.src = 'about:blank';
-        requestAnimationFrame(() => { storyFrame.src = HERO_REEL_EMBED; });
-      }
-      window.open(HERO_REEL_URL, '_blank', 'noopener,noreferrer');
+      const ytLink = story.querySelector('[data-hero-story-yt]');
+      if (ytLink) ytLink.href = 'https://www.youtube.com/watch?v=' + yt;
+      storyFrame.src = 'https://www.youtube.com/embed/' + yt + '?autoplay=1&rel=0&modestbranding=1';
       root.querySelector('[data-hero-story-close]')?.focus();
     };
 
@@ -239,7 +238,7 @@
     };
 
     root.querySelector('[data-hero-watch]')?.addEventListener('click', openStory);
-    story.querySelectorAll('[data-hero-story-close]')?.forEach((btn) => {
+    story.querySelectorAll('[data-hero-story-close]').forEach((btn) => {
       btn.addEventListener('click', closeStory);
     });
     story?.addEventListener('click', (e) => {
