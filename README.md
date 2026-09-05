@@ -1,12 +1,33 @@
-# Aarvee website (restored)
+# Aarvee website
 
-Restored from git stash after an accidental wipe during a Cursor workspace move (`move_agent_to_root`).
+## Protected in git
 
-- **Restored:** `index.html`, `css/styles.css`, `js/main.js` (pre-wipe v5 build)
-- **Also kept:** `_backup_after_rebuild_v11_*` — the later editorial rebuild, in case you want that again
+The site is **committed on `main`** so Cursor workspace moves cannot wipe it as untracked files again.
 
-Preview:
+| What | Where |
+|------|--------|
+| Live restored build (v5) | `index.html`, `css/`, `js/` — tag `aarvee-restored-v5` |
+| Later editorial rebuild | `_backup_after_rebuild_v11_20260905_151559/` |
+| Extra copy | `git stash@{0}` (kept on purpose — do not drop) |
+
+### If files ever look missing
+
+```bash
+cd "/Users/macbookprom3/Documents/Aarvee"
+git checkout main -- index.html css/styles.css js/main.js
+# or pin exactly to the restored tag:
+git checkout aarvee-restored-v5 -- index.html css/styles.css js/main.js
+```
+
+### Preview
+
 ```bash
 cd "/Users/macbookprom3/Documents/Aarvee"
 python3 -m http.server 5173
 ```
+
+Open http://localhost:5173/
+
+### Safety rule
+
+Commit (or stash) before any Cursor “move workspace / move agent to root” on this folder. Untracked files are what got wiped last time.
