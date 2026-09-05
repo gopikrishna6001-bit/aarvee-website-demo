@@ -1,0 +1,225 @@
+{
+  "channels": {
+    "instagram": {
+      "handle": "@aarvee_engg",
+      "url": "https://www.instagram.com/aarvee_engg/",
+      "reels": "https://www.instagram.com/aarvee_engg/reels/",
+      "role": "Short on-screen proof \u2014 projects, people, moments"
+    },
+    "youtube": {
+      "handle": "@aarvee_engg",
+      "url": "https://www.youtube.com/@aarvee_engg",
+      "channelId": "UCO_lLLO1j4yItGAXjqvkVgA",
+      "role": "Longer films \u2014 sector explainers, values, corporate depth"
+    }
+  },
+  "filters": [
+    {
+      "id": "all",
+      "label": "All"
+    },
+    {
+      "id": "rail",
+      "label": "Rail & Metro"
+    },
+    {
+      "id": "highways",
+      "label": "Highways & Bridges"
+    },
+    {
+      "id": "irrigation",
+      "label": "Irrigation"
+    },
+    {
+      "id": "urban",
+      "label": "Urban"
+    },
+    {
+      "id": "people",
+      "label": "People"
+    },
+    {
+      "id": "brand",
+      "label": "Brand"
+    }
+  ],
+  "items": [
+    {
+      "id": "yt-rail",
+      "format": "long",
+      "sector": "rail",
+      "title": "Rail & Metro Rail",
+      "blurb": "How Aarvee designs corridors, metros and transit systems.",
+      "source": "youtube",
+      "youtubeId": "Iea1lrfk19I",
+      "thumb": "https://i.ytimg.com/vi/Iea1lrfk19I/hqdefault.jpg",
+      "tags": [
+        "RailwayDesign",
+        "UrbanMobility"
+      ]
+    },
+    {
+      "id": "yt-highways",
+      "format": "long",
+      "sector": "highways",
+      "title": "Highways and Bridges",
+      "blurb": "Expressways and structures \u2014 engineering built to be delivered.",
+      "source": "youtube",
+      "youtubeId": "_qDLPHb4kiM",
+      "thumb": "https://i.ytimg.com/vi/_qDLPHb4kiM/hqdefault.jpg",
+      "tags": [
+        "Highways",
+        "Bridges"
+      ]
+    },
+    {
+      "id": "yt-irrigation",
+      "format": "long",
+      "sector": "irrigation",
+      "title": "Irrigation",
+      "blurb": "Basin-scale water resources and irrigation programmes.",
+      "source": "youtube",
+      "youtubeId": "7_K2m5jzjp0",
+      "thumb": "https://i.ytimg.com/vi/7_K2m5jzjp0/hqdefault.jpg",
+      "tags": [
+        "Irrigation",
+        "Water"
+      ]
+    },
+    {
+      "id": "yt-urban",
+      "format": "long",
+      "sector": "urban",
+      "title": "Urban Design",
+      "blurb": "City-scale design thinking for liveable urban systems.",
+      "source": "youtube",
+      "youtubeId": "sUvQYSwahFA",
+      "thumb": "https://i.ytimg.com/vi/sUvQYSwahFA/hqdefault.jpg",
+      "tags": [
+        "UrbanDesign"
+      ]
+    },
+    {
+      "id": "yt-rail-short-1",
+      "format": "short",
+      "sector": "rail",
+      "title": "Railway design excellence",
+      "blurb": "Short proof of rail craft \u2014 ideal for screens and social.",
+      "source": "youtube",
+      "youtubeId": "ZfdfPyIYrIA",
+      "thumb": "https://i.ytimg.com/vi/ZfdfPyIYrIA/hqdefault.jpg",
+      "tags": [
+        "EngineeringExcellence",
+        "IndianRailways"
+      ]
+    },
+    {
+      "id": "yt-rail-short-2",
+      "format": "short",
+      "sector": "rail",
+      "title": "Infra & urban mobility",
+      "blurb": "Quick cut on railway design and urban mobility.",
+      "source": "youtube",
+      "youtubeId": "4D70BKtccZI",
+      "thumb": "https://i.ytimg.com/vi/4D70BKtccZI/hqdefault.jpg",
+      "tags": [
+        "InfraDevelopment",
+        "UrbanMobility"
+      ]
+    },
+    {
+      "id": "yt-corporate",
+      "format": "long",
+      "sector": "brand",
+      "title": "Corporate film",
+      "blurb": "Who Aarvee is \u2014 multidisciplinary infrastructure consulting.",
+      "source": "youtube",
+      "youtubeId": "C64HADDvgs0",
+      "thumb": "https://i.ytimg.com/vi/C64HADDvgs0/hqdefault.jpg",
+      "tags": [
+        "Brand"
+      ]
+    },
+    {
+      "id": "yt-values",
+      "format": "short",
+      "sector": "brand",
+      "title": "Our Values",
+      "blurb": "The principles behind the practice.",
+      "source": "youtube",
+      "youtubeId": "HC-8JOhyYPk",
+      "thumb": "https://i.ytimg.com/vi/HC-8JOhyYPk/hqdefault.jpg",
+      "tags": [
+        "Values"
+      ]
+    },
+    {
+      "id": "yt-life",
+      "format": "short",
+      "sector": "people",
+      "title": "The Aarvee Life",
+      "blurb": "Culture on camera \u2014 easy to understand, human proof.",
+      "source": "youtube",
+      "youtubeId": "5sfPllVJqEc",
+      "thumb": "https://i.ytimg.com/vi/5sfPllVJqEc/hqdefault.jpg",
+      "tags": [
+        "LifeAtAarvee"
+      ]
+    },
+    {
+      "id": "yt-civil",
+      "format": "short",
+      "sector": "people",
+      "title": "Why we love civil engineering",
+      "blurb": "Engineers speaking plainly about the craft.",
+      "source": "youtube",
+      "youtubeId": "Ih4XcQ3bcqY",
+      "thumb": "https://i.ytimg.com/vi/Ih4XcQ3bcqY/hqdefault.jpg",
+      "tags": [
+        "CivilEngineering"
+      ]
+    },
+    {
+      "id": "yt-nandana",
+      "format": "long",
+      "sector": "people",
+      "title": "Women of Aarvee | Nandana Jetty",
+      "blurb": "Leadership and craft from inside the practice.",
+      "source": "youtube",
+      "youtubeId": "3lTbidSHMlQ",
+      "thumb": "https://i.ytimg.com/vi/3lTbidSHMlQ/hqdefault.jpg",
+      "tags": [
+        "WomenOfAarvee"
+      ]
+    },
+    {
+      "id": "yt-australia",
+      "format": "long",
+      "sector": "brand",
+      "title": "10 Years of Aarvee Australia",
+      "blurb": "International delivery \u2014 real presence beyond India.",
+      "source": "youtube",
+      "youtubeId": "0Vdu029ne1k",
+      "thumb": "https://i.ytimg.com/vi/0Vdu029ne1k/hqdefault.jpg",
+      "tags": [
+        "International",
+        "Australia"
+      ]
+    },
+    {
+      "id": "ig-reels-hub",
+      "format": "short",
+      "sector": "brand",
+      "title": "Instagram Reels hub",
+      "blurb": "All short on-screen clips \u2014 Projects, Team, International, Media.",
+      "source": "instagram",
+      "url": "https://www.instagram.com/aarvee_engg/reels/",
+      "thumb": "assets/work-rail.jpg",
+      "tags": [
+        "Reels",
+        "Projects",
+        "Team"
+      ]
+    }
+  ]
+}

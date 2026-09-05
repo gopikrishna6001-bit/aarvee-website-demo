@@ -264,3 +264,52 @@ p{margin:0}
   .brand-name span{display:none}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.hero-slide img{transform:none!important}}
+
+
+/* Proof media — Instagram short + YouTube long, sector-tagged */
+.media-channels{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.media-channel{display:grid;gap:.35rem;padding:1.15rem 1.25rem;border:1px solid var(--line);background:var(--paper);transition:border-color .2s,transform .2s var(--ease)}
+.media-channel:hover{border-color:var(--accent);transform:translateY(-2px)}
+.media-channel-kicker{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.media-channel strong{font-family:var(--serif);font-size:1.35rem;font-weight:600}
+.media-channel span:last-child{color:var(--steel);font-size:.92rem}
+.media-toolbar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;margin-bottom:1.25rem}
+.media-filters,.media-format-toggle{display:flex;flex-wrap:wrap;gap:.4rem}
+.media-filters button,.media-format-toggle button{padding:.45rem .85rem;border:1px solid var(--line);background:#fff;font-size:.82rem;font-weight:500;color:var(--steel)}
+.media-filters button.is-active,.media-format-toggle button.is-active{background:var(--ink);border-color:var(--ink);color:#fff}
+.media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.media-card{position:relative;display:grid;grid-template-rows:auto 1fr;text-align:left;border:1px solid var(--line);background:#fff;overflow:hidden;transition:transform .2s var(--ease),box-shadow .2s}
+.media-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(15,23,40,.08)}
+.media-card-thumb{position:relative;aspect-ratio:16/10;background:var(--navy);overflow:hidden}
+.media-card-thumb img{width:100%;height:100%;object-fit:cover}
+.media-card-thumb .play{position:absolute;inset:auto auto .7rem .7rem;width:2.4rem;height:2.4rem;border-radius:999px;background:rgba(255,255,255,.94);color:var(--ink);display:grid;place-items:center}
+.media-badges{position:absolute;top:.7rem;left:.7rem;display:flex;gap:.35rem;z-index:1}
+.media-badge{padding:.25rem .5rem;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:rgba(15,23,40,.78);color:#fff}
+.media-badge.format-short{background:var(--accent)}
+.media-badge.format-long{background:#0f1728}
+.media-card-body{padding:1rem 1.05rem 1.15rem;display:grid;gap:.35rem}
+.media-card-body .sector{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.media-card-body strong{font-family:var(--serif);font-size:1.15rem;font-weight:600;line-height:1.2}
+.media-card-body p{color:var(--steel);font-size:.9rem}
+.media-card[hidden]{display:none}
+
+.media-lightbox{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:1.25rem;background:rgba(10,14,22,.78);backdrop-filter:blur(8px)}
+.media-lightbox[hidden]{display:none}
+.media-lightbox-panel{position:relative;width:min(960px,100%);background:#0b1018;border:1px solid rgba(255,255,255,.12)}
+.media-lightbox-close{position:absolute;top:.75rem;right:.75rem;z-index:2;width:2.5rem;height:2.5rem;border-radius:999px;background:#fff;color:var(--ink);display:grid;place-items:center}
+.media-lightbox-frame{aspect-ratio:16/9;width:100%}
+.media-lightbox-frame iframe{width:100%;height:100%;border:0;display:block}
+.media-lightbox-meta{padding:1rem 1.2rem 1.2rem;color:#fff}
+.media-lightbox-meta .sector{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:0 0 .35rem}
+.media-lightbox-meta h3{margin:0 0 .4rem;font-family:var(--serif);font-weight:600;font-size:1.4rem}
+.media-lightbox-meta p{margin:0;color:rgba(255,255,255,.7);font-size:.95rem}
+
+.hero-story-player{position:relative;width:100%;aspect-ratio:16/9;background:#000}
+.hero-story-player iframe,.hero-story-player video{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+
+@media(max-width:980px){
+  .media-channels,.media-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .media-channels,.media-grid{grid-template-columns:1fr}
+}

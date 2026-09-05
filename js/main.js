@@ -73,10 +73,10 @@
         story: 'Gateways for national trade',
       },
       {
-        title: 'Power infrastructure that endures.',
-        lede: 'Transmission, renewables and energy systems shaped by multidisciplinary engineering judgement.',
-        tag: 'Power & Renewables',
-        story: 'Energy that connects futures',
+        title: 'Water and irrigation at national scale.',
+        lede: 'Lift irrigation and multipurpose systems — engineering that feeds regions and cities.',
+        tag: 'Irrigation & Water',
+        story: 'Water systems that endure',
       },
     ];
 
@@ -133,20 +133,34 @@
       }
     };
 
+    const storyFrame = root.querySelector('[data-hero-story-frame]');
     const openStory = () => {
       const slide = slides[index];
       const copy = COPY[index];
+      const yt = slide?.dataset.youtube || '';
       const src = slide?.dataset.video || '';
-      if (!story || !storyVideo || !src) return;
+      if (!story) return;
+      if (!yt && !src) return;
       pause();
       storyOpen = true;
       story.hidden = false;
       if (storyTag) storyTag.textContent = copy.tag;
       if (storyTitle) storyTitle.textContent = copy.story;
-      storyVideo.poster = slide.querySelector('img')?.src || '';
-      storyVideo.src = src;
-      storyVideo.currentTime = 0;
-      storyVideo.play?.().catch(() => {});
+      if (yt && storyFrame) {
+        if (storyVideo) storyVideo.hidden = true;
+        storyFrame.hidden = false;
+        storyFrame.src = `https://www.youtube.com/embed/${yt}?autoplay=1&rel=0`;
+      } else if (storyVideo && src) {
+        if (storyFrame) {
+          storyFrame.hidden = true;
+          storyFrame.src = '';
+        }
+        storyVideo.hidden = false;
+        storyVideo.poster = slide.querySelector('img')?.src || '';
+        storyVideo.src = src;
+        storyVideo.currentTime = 0;
+        storyVideo.play?.().catch(() => {});
+      }
       root.querySelector('[data-hero-story-close]')?.focus();
     };
 
@@ -154,10 +168,12 @@
       if (!story) return;
       storyOpen = false;
       story.hidden = true;
+      if (storyFrame) storyFrame.src = '';
       if (storyVideo) {
         storyVideo.pause?.();
         storyVideo.removeAttribute('src');
         storyVideo.load?.();
+        storyVideo.hidden = true;
       }
       resume();
     };
@@ -333,6 +349,138 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal?.classList.contains('is-open')) closeModal();
   });
+
+
+
+  /* Sector-tagged proof media (YouTube long + Instagram short hub) */
+  (() => {
+    const grid = document.querySelector('[data-media-grid]');
+    const lightbox = document.querySelector('[data-media-lightbox]');
+    const frame = document.querySelector('[data-media-lightbox-frame]');
+    if (!grid) return;
+
+    const FALLBACK = null; // loaded from JSON
+    let items = [];
+    let sector = 'all';
+    let format = 'all';
+
+    const sectorLabel = {
+      rail: 'Rail & Metro',
+      highways: 'Highways & Bridges',
+      irrigation: 'Irrigation',
+      urban: 'Urban',
+      people: 'People',
+      brand: 'Brand',
+    };
+
+    const render = () => {
+      const filtered = items.filter((item) => {
+        const sOk = sector === 'all' || item.sector === sector;
+        const fOk = format === 'all' || item.format === format;
+        return sOk && fOk;
+      });
+      grid.innerHTML = filtered.map((item) => {
+        const isIg = item.source === 'instagram';
+        const badge = item.format === 'short' ? 'Short' : 'Long';
+        const play = isIg
+          ? `<a class="media-card" href="${item.url}" target="_blank" rel="noopener" data-sector="${item.sector}" data-format="${item.format}">`
+          : `<button type="button" class="media-card" data-media-play="${item.youtubeId}" data-sector="${item.sector}" data-format="${item.format}" data-title="${item.title.replace(/"/g, '&quot;')}" data-blurb="${(item.blurb || '').replace(/"/g, '&quot;')}">`;
+        const close = isIg ? '</a>' : '</button>';
+        return `
+          ${play}
+            <div class="media-card-thumb">
+              <div class="media-badges">
+                <span class="media-badge format-${item.format}">${badge}</span>
+                <span class="media-badge">${isIg ? 'Instagram' : 'YouTube'}</span>
+              </div>
+              <img src="${item.thumb}" alt="" loading="lazy" />
+              <span class="play" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5z"/></svg></span>
+            </div>
+            <div class="media-card-body">
+              <span class="sector">${sectorLabel[item.sector] || item.sector}</span>
+              <strong>${item.title}</strong>
+              <p>${item.blurb || ''}</p>
+            </div>
+          ${close}`;
+      }).join('') || '<p class="media-empty">No films in this filter — try All.</p>';
+    };
+
+    const openLightbox = (id, title, blurb, sec) => {
+      if (!lightbox || !frame || !id) return;
+      frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+      lightbox.querySelector('[data-media-lightbox-sector]').textContent = sectorLabel[sec] || sec || '';
+      lightbox.querySelector('[data-media-lightbox-title]').textContent = title || '';
+      lightbox.querySelector('[data-media-lightbox-blurb]').textContent = blurb || '';
+      lightbox.hidden = false;
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      lightbox.querySelector('[data-media-lightbox-close]')?.focus();
+    };
+
+    const closeLightbox = () => {
+      if (!lightbox) return;
+      lightbox.hidden = true;
+      lightbox.setAttribute('aria-hidden', 'true');
+      if (frame) frame.src = '';
+      document.body.style.overflow = '';
+    };
+
+    grid.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-media-play]');
+      if (!btn) return;
+      openLightbox(btn.dataset.mediaPlay, btn.dataset.title, btn.dataset.blurb, btn.dataset.sector);
+    });
+
+    document.querySelectorAll('[data-media-filter]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        sector = btn.dataset.mediaFilter;
+        document.querySelectorAll('[data-media-filter]').forEach((b) => b.classList.toggle('is-active', b === btn));
+        render();
+      });
+    });
+    document.querySelectorAll('[data-media-format]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        format = btn.dataset.mediaFormat;
+        document.querySelectorAll('[data-media-format]').forEach((b) => b.classList.toggle('is-active', b === btn));
+        render();
+      });
+    });
+
+    document.querySelectorAll('[data-jump-media]').forEach((a) => {
+      a.addEventListener('click', () => {
+        const s = a.dataset.jumpMedia;
+        const filterBtn = document.querySelector(`[data-media-filter="${s}"]`);
+        if (filterBtn) filterBtn.click();
+      });
+    });
+
+    lightbox?.querySelectorAll('[data-media-lightbox-close]').forEach((el) => el.addEventListener('click', closeLightbox));
+    lightbox?.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox && !lightbox.hidden) closeLightbox();
+    });
+
+    const boot = (data) => {
+      items = data.items || [];
+      render();
+      // honor hash like #media? not needed; support ? already via jump
+      const params = new URLSearchParams(location.search);
+      const s = params.get('sector');
+      if (s) {
+        const filterBtn = document.querySelector(`[data-media-filter="${s}"]`);
+        filterBtn?.click();
+      }
+    };
+
+    fetch('data/media-catalog.json')
+      .then((r) => r.json())
+      .then(boot)
+      .catch(() => {
+        // inline minimal fallback if fetch fails on file://
+        boot({ items: [] });
+        grid.innerHTML = `<p>Open via local server to load the media library. Meanwhile: <a href="https://www.instagram.com/aarvee_engg/reels/" target="_blank" rel="noopener">Instagram Reels</a> · <a href="https://www.youtube.com/@aarvee_engg" target="_blank" rel="noopener">YouTube</a></p>`;
+      });
+  })();
 
 
   document.querySelector('.cta-form')?.addEventListener('submit', (e) => {
