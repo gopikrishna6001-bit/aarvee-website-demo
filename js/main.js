@@ -206,25 +206,26 @@
     };
 
     const storyFrame = root.querySelector('[data-hero-story-frame]');
-    const storyPanel = root.querySelector('.hero-story-panel');
-    const HERO_REEL_ID = 'DVgR_j_D9HD';
-    const HERO_REEL_EMBED = 'https://www.instagram.com/reel/DVgR_j_D9HD/embed';
+    const HERO_REEL_URL = 'https://www.instagram.com/reel/DVgR_j_D9HD/';
+    const HERO_REEL_EMBED = 'https://www.instagram.com/reel/DVgR_j_D9HD/embed/?cr=1&v=14&wp=400';
     const openStory = () => {
       const copy = COPY[index];
-      if (!story || !storyFrame) return;
+      if (!story) return;
       pause();
       storyOpen = true;
+      root.classList.add('story-open');
       story.hidden = false;
-      story.classList.add('is-reel');
-      storyPanel?.classList.add('is-reel');
       if (storyTag) storyTag.textContent = 'Instagram · @aarvee_engg';
-      if (storyTitle) storyTitle.textContent = copy.story || 'Aarvee story';
-      if (storyVideo) storyVideo.hidden = true;
-      storyFrame.hidden = false;
-      storyFrame.title = 'Aarvee Instagram Reel';
-      storyFrame.src = HERO_REEL_EMBED;
-      const openLink = story.querySelector('[data-hero-story-ig]');
-      if (openLink) openLink.href = 'https://www.instagram.com/reel/' + HERO_REEL_ID + '/';
+      if (storyTitle) storyTitle.textContent = (copy && copy.story) || 'Aarvee story';
+      const ig = story.querySelector('[data-hero-story-ig]');
+      if (ig) ig.href = HERO_REEL_URL;
+      // Instagram often plays audio in iframes while hiding video — open the real reel,
+      // and still mount the embed for viewers where Instagram allows it.
+      if (storyFrame) {
+        storyFrame.src = 'about:blank';
+        requestAnimationFrame(() => { storyFrame.src = HERO_REEL_EMBED; });
+      }
+      window.open(HERO_REEL_URL, '_blank', 'noopener,noreferrer');
       root.querySelector('[data-hero-story-close]')?.focus();
     };
 
@@ -232,20 +233,15 @@
       if (!story) return;
       storyOpen = false;
       story.hidden = true;
-      story.classList.remove('is-reel');
-      storyPanel?.classList.remove('is-reel');
-      if (storyFrame) storyFrame.src = '';
-      if (storyVideo) {
-        storyVideo.pause?.();
-        storyVideo.removeAttribute('src');
-        storyVideo.load?.();
-        storyVideo.hidden = true;
-      }
+      root.classList.remove('story-open');
+      if (storyFrame) storyFrame.src = 'about:blank';
       resume();
     };
 
     root.querySelector('[data-hero-watch]')?.addEventListener('click', openStory);
-    root.querySelector('[data-hero-story-close]')?.addEventListener('click', closeStory);
+    story.querySelectorAll('[data-hero-story-close]')?.forEach((btn) => {
+      btn.addEventListener('click', closeStory);
+    });
     story?.addEventListener('click', (e) => {
       if (e.target === story) closeStory();
     });

@@ -63,6 +63,7 @@ p{margin:0}
 /* Hero — left copy dock, full-bleed visual, contextual live metrics */
 .hero{position:relative;min-height:100svh;display:grid;align-items:end;color:#fff;overflow:hidden;isolation:isolate}
 .hero-stage{position:absolute;inset:0;z-index:-2}
+.hero.story-open .hero-stage,.hero.story-open .hero-content,.hero.story-open .hero-rail,.hero.story-open .hero-scrim,.hero.story-open .hero-grid{visibility:hidden}
 .hero-slide{position:absolute;inset:0}
 .hero-slide[hidden]{display:none}
 .hero-slide img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);opacity:0;filter:saturate(1.05) contrast(1.05);transition:opacity .7s var(--ease),transform 8s linear,filter .7s var(--ease)}
@@ -107,19 +108,74 @@ p{margin:0}
 .hero.is-paused .hero-thumb.is-active .hero-thumb-progress i{animation-play-state:paused}
 @keyframes heroProgress{from{width:0}to{width:100%}}
 
-.hero-story{position:absolute;inset:0;z-index:5;display:grid;align-items:end;padding:1.25rem;background:rgba(10,14,22,.55);backdrop-filter:blur(6px)}
+/* Story panel — Instagram Reel (opaque, vertical, no bleed-through) */
+.hero-story{
+  position:absolute;inset:0;z-index:20;
+  display:grid;place-items:center;
+  padding:1rem;
+  background:rgba(5,8,14,.94);
+  backdrop-filter:blur(10px);
+}
 .hero-story[hidden]{display:none}
-.hero-story-panel{position:relative;width:min(920px,100%);margin:0 auto;background:#0b1018;border:1px solid rgba(255,255,255,.12);overflow:hidden;animation:rise .35s var(--ease)}
-.hero-story-close{position:absolute;top:.75rem;right:.75rem;z-index:2;width:2.5rem;height:2.5rem;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink);display:grid;place-items:center}
-.hero-story-meta{position:absolute;left:0;right:0;top:0;padding:1rem 3.5rem 1rem 1.1rem;background:linear-gradient(rgba(0,0,0,.65),transparent);z-index:1}
-.hero-story-meta .mono-label{margin:0 0 .25rem;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.hero-story-panel{
+  position:relative;
+  width:min(400px,100%);
+  background:#000;
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 24px 80px rgba(0,0,0,.55);
+  animation:rise .35s var(--ease);
+  overflow:hidden;
+}
+.hero-story-close{
+  position:absolute;top:.65rem;right:.65rem;z-index:3;
+  width:2.5rem;height:2.5rem;border-radius:999px;
+  background:rgba(255,255,255,.95);color:var(--ink);
+  display:grid;place-items:center;
+}
+.hero-story-meta{
+  position:relative;z-index:2;
+  padding:.9rem 3.2rem .75rem 1rem;
+  background:#0b1018;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.hero-story-meta .mono-label{margin:0 0 .25rem;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+.hero-story-meta h2{margin:0;font-family:var(--serif);font-weight:600;font-size:1.15rem;color:#fff}
+.hero-story-player{
+  position:relative;
+  width:100%;
+  height:min(68vh,640px);
+  background:#111;
+  overflow:hidden;
+}
+.hero-story-player iframe{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  border:0;
+  background:#111;
+}
+.hero-story-actions{
+  display:flex;flex-wrap:wrap;gap:.55rem;
+  padding:.85rem 1rem;
+  background:#0b1018;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.hero-story-actions .btn-ghost{border-color:rgba(255,255,255,.3);color:#fff}
+.hero-story-note{
+  margin:0;padding:0 1rem 1rem;
+  background:#0b1018;
+  color:rgba(255,255,255,.55);
+  font-size:.78rem;line-height:1.4;
+}
+.hero-story-note strong{color:rgba(255,255,255,.85)}
+
+.mono-label{margin:0 0 .25rem;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7)}
 .hero-story-meta h2{margin:0;font-family:var(--serif);font-weight:600;font-size:clamp(1.2rem,2.4vw,1.7rem)}
 .hero-story-player{position:relative;width:100%;aspect-ratio:16/9;background:#000}
-.hero-story.is-reel{align-items:center}
-.hero-story-panel.is-reel{width:min(420px,100%);max-height:min(88vh,820px)}
-.hero-story-panel.is-reel .hero-story-player{aspect-ratio:9/16;max-height:min(78vh,720px)}
-.hero-story-ig{display:inline-block;margin-top:.55rem;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.85);text-decoration:underline;text-underline-offset:.15em}
-.hero-story-ig:hover{color:#fff}
+
+
+
+
+
 
 .hero-story-player iframe,.hero-story-player video{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
 .mono-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
