@@ -73,7 +73,7 @@ p{margin:0}
   linear-gradient(90deg,rgba(8,12,20,.88) 0%,rgba(8,12,20,.62) 34%,rgba(8,12,20,.18) 58%,rgba(8,12,20,.28) 100%),
   linear-gradient(180deg,rgba(8,12,20,.35) 0%,transparent 28%,rgba(8,12,20,.55) 72%,rgba(8,12,20,.9) 100%)}
 .hero-grid{position:absolute;inset:0;z-index:-1;opacity:.1;background-image:linear-gradient(rgba(255,255,255,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.35) 1px,transparent 1px);background-size:96px 96px;mask-image:linear-gradient(90deg,#000 0%,transparent 55%);pointer-events:none}
-.hero-content{position:relative;z-index:2;width:min(38rem,calc(100% - 2.5rem));margin:0 0 0 clamp(1rem,2vw,1.5rem);padding:clamp(5.5rem,10vh,7rem) 0 6.5rem;display:flex;justify-content:flex-start;align-items:flex-end}
+.hero-content{position:relative;z-index:2;width:min(38rem,calc(100% - 2.5rem));margin:0 0 0 calc(clamp(1rem,2vw,1.5rem) + 0.5in);padding:clamp(5.5rem,10vh,7rem) 0 6.5rem;display:flex;justify-content:flex-start;align-items:flex-end}
 .hero-copy{max-width:none;text-align:left;animation:rise .95s var(--ease) both}
 .hero-brand{font-family:var(--serif);font-size:clamp(1.2rem,2vw,1.5rem);margin:0 0 .55rem;letter-spacing:-.01em}
 .hero-eyebrow{color:rgba(255,255,255,.68)!important;margin:0 0 .85rem!important}
