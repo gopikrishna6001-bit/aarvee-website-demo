@@ -210,12 +210,37 @@
     };
 
     const storyFrame = root.querySelector('[data-hero-story-frame]');
-    // Sector films from Aarvee YouTube — plays on the website (same as Proof media)
+    const youtubeEmbed = (id) => {
+      const params = new URLSearchParams({ autoplay: '1', rel: '0' });
+      if (location.origin && location.origin !== 'null') params.set('origin', location.origin);
+      return 'https://www.youtube.com/embed/' + id + '?' + params.toString();
+    };
+    const playFile = (video, frame, file) => {
+      if (frame) {
+        frame.hidden = true;
+        frame.removeAttribute('src');
+      }
+      video.hidden = false;
+      video.src = file;
+      video.play().catch(() => {});
+    };
+    const playYoutube = (video, frame, id) => {
+      if (video) {
+        video.pause();
+        video.hidden = true;
+        video.removeAttribute('src');
+      }
+      frame.hidden = false;
+      frame.referrerPolicy = 'strict-origin-when-cross-origin';
+      frame.src = youtubeEmbed(id);
+    };
+    // Hosted sector films. YouTube embeds fail here (Error 153 without a referrer, and a bot wall on this network).
     const openStory = () => {
       const slide = slides[index];
       const copy = COPY[index];
       const yt = (slide && slide.dataset.youtube) || (copy && copy.youtubeId) || '';
-      if (!story || !storyFrame || !yt) return;
+      const file = (slide && slide.dataset.video) || '';
+      if (!story || (!file && !yt)) return;
       pause();
       storyOpen = true;
       root.classList.add('story-open');
@@ -223,8 +248,9 @@
       if (storyTag) storyTag.textContent = (copy && copy.tag) || 'Story film';
       if (storyTitle) storyTitle.textContent = (copy && copy.story) || 'Aarvee story';
       const ytLink = story.querySelector('[data-hero-story-yt]');
-      if (ytLink) ytLink.href = 'https://www.youtube.com/watch?v=' + yt;
-      storyFrame.src = 'https://www.youtube.com/embed/' + yt + '?autoplay=1&rel=0&modestbranding=1';
+      if (ytLink) ytLink.href = yt ? 'https://www.youtube.com/watch?v=' + yt : 'https://www.youtube.com/@aarvee_engg';
+      if (file && storyVideo) playFile(storyVideo, storyFrame, file);
+      else if (storyFrame && yt) playYoutube(storyVideo, storyFrame, yt);
       root.querySelector('[data-hero-story-close]')?.focus();
     };
 
@@ -233,7 +259,15 @@
       storyOpen = false;
       story.hidden = true;
       root.classList.remove('story-open');
-      if (storyFrame) storyFrame.src = 'about:blank';
+      if (storyVideo) {
+        storyVideo.pause();
+        storyVideo.removeAttribute('src');
+        storyVideo.load();
+      }
+      if (storyFrame) {
+        storyFrame.removeAttribute('src');
+        storyFrame.hidden = true;
+      }
       resume();
     };
 
@@ -418,6 +452,7 @@
     const grid = document.querySelector('[data-media-grid]');
     const lightbox = document.querySelector('[data-media-lightbox]');
     const frame = document.querySelector('[data-media-lightbox-frame]');
+    const lightboxVideo = document.querySelector('[data-media-lightbox-video]');
     if (!grid) return;
 
     const FALLBACK = null; // loaded from JSON
@@ -445,7 +480,7 @@
         const badge = item.format === 'short' ? 'Short' : 'Long';
         const play = isIg
           ? `<a class="media-card" href="${item.url}" target="_blank" rel="noopener" data-sector="${item.sector}" data-format="${item.format}">`
-          : `<button type="button" class="media-card" data-media-play="${item.youtubeId}" data-sector="${item.sector}" data-format="${item.format}" data-title="${item.title.replace(/"/g, '&quot;')}" data-blurb="${(item.blurb || '').replace(/"/g, '&quot;')}">`;
+          : `<button type="button" class="media-card" data-media-play="${item.youtubeId || ''}" data-media-file="${item.file || ''}" data-sector="${item.sector}" data-format="${item.format}" data-title="${item.title.replace(/"/g, '&quot;')}" data-blurb="${(item.blurb || '').replace(/"/g, '&quot;')}">`;
         const close = isIg ? '</a>' : '</button>';
         return `
           ${play}
@@ -466,9 +501,32 @@
       }).join('') || '<p class="media-empty">No films in this filter — try All.</p>';
     };
 
-    const openLightbox = (id, title, blurb, sec) => {
-      if (!lightbox || !frame || !id) return;
-      frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+    const youtubeEmbed = (id) => {
+      const params = new URLSearchParams({ autoplay: '1', rel: '0' });
+      if (location.origin && location.origin !== 'null') params.set('origin', location.origin);
+      return `https://www.youtube.com/embed/${id}?${params}`;
+    };
+
+    const openLightbox = (id, title, blurb, sec, file) => {
+      if (!lightbox || (!file && !id)) return;
+      if (file && lightboxVideo) {
+        if (frame) {
+          frame.hidden = true;
+          frame.removeAttribute('src');
+        }
+        lightboxVideo.hidden = false;
+        lightboxVideo.src = file;
+        lightboxVideo.play().catch(() => {});
+      } else if (frame && id) {
+        if (lightboxVideo) {
+          lightboxVideo.pause();
+          lightboxVideo.hidden = true;
+          lightboxVideo.removeAttribute('src');
+        }
+        frame.hidden = false;
+        frame.referrerPolicy = 'strict-origin-when-cross-origin';
+        frame.src = youtubeEmbed(id);
+      }
       lightbox.querySelector('[data-media-lightbox-sector]').textContent = sectorLabel[sec] || sec || '';
       lightbox.querySelector('[data-media-lightbox-title]').textContent = title || '';
       lightbox.querySelector('[data-media-lightbox-blurb]').textContent = blurb || '';
@@ -482,14 +540,22 @@
       if (!lightbox) return;
       lightbox.hidden = true;
       lightbox.setAttribute('aria-hidden', 'true');
-      if (frame) frame.src = '';
+      if (lightboxVideo) {
+        lightboxVideo.pause();
+        lightboxVideo.removeAttribute('src');
+        lightboxVideo.load();
+      }
+      if (frame) {
+        frame.removeAttribute('src');
+        frame.hidden = true;
+      }
       document.body.style.overflow = '';
     };
 
     grid.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-media-play]');
       if (!btn) return;
-      openLightbox(btn.dataset.mediaPlay, btn.dataset.title, btn.dataset.blurb, btn.dataset.sector);
+      openLightbox(btn.dataset.mediaPlay, btn.dataset.title, btn.dataset.blurb, btn.dataset.sector, btn.dataset.mediaFile);
     });
 
     document.querySelectorAll('[data-media-filter]').forEach((btn) => {
