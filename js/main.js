@@ -221,8 +221,14 @@
         frame.removeAttribute('src');
       }
       video.hidden = false;
+      video.loop = true;
       video.src = file;
-      video.play().catch(() => {});
+      const start = () => video.play().catch(() => {
+        video.muted = true;
+        video.play().catch(() => {});
+      });
+      if (video.readyState >= 2) start();
+      else video.addEventListener('canplay', start, { once: true });
     };
     const playYoutube = (video, frame, id) => {
       if (video) {
