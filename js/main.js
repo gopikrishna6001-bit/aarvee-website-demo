@@ -97,17 +97,17 @@
 
     const COPY = [
       {
-        title: 'Engineering infrastructure for nations &amp; generations.',
-        lede: 'Technically robust design and end-to-end project management — engineered to perform on site.',
-        tag: 'Rail & Metro',
-        story: 'Corridors that carry nations',
-        index: '01 / 04 · Rail',
-        youtubeId: 'Iea1lrfk19I',
+        title: 'Global engineering. Indian roots.',
+        lede: 'Aarvee plans, designs and delivers public infrastructure — rail, highways, water, ports and energy — with governments and developers in more than 20 countries.',
+        tag: 'The Aarvee story',
+        story: 'A legacy built in public',
+        index: 'Since 1989 · Hyderabad',
+        youtubeId: 'C64HADDvgs0',
         metrics: [
-          { to: 4000, suffix: '+', label: 'Employees' },
-          { to: 35, suffix: '+', label: 'Years' },
+          { to: 4000, suffix: '+', label: 'People worldwide' },
           { to: 20, suffix: '+', label: 'Countries' },
-          { to: 20000, suffix: ' km', label: 'Railway lines designed', format: 'km' },
+          { to: 2750, suffix: '+', label: 'Projects delivered' },
+          { text: '1989', label: 'Founded in Hyderabad' },
         ],
       },
       {
@@ -190,6 +190,7 @@
 
     const armTimer = () => {
       clearTimeout(timer);
+      if (slides.length < 2) return;
       timer = setTimeout(() => setSlide(index + 1), DURATION);
     };
 
@@ -255,8 +256,8 @@
       if (storyTitle) storyTitle.textContent = (copy && copy.story) || 'Aarvee story';
       const ytLink = story.querySelector('[data-hero-story-yt]');
       if (ytLink) ytLink.href = yt ? 'https://www.youtube.com/watch?v=' + yt : 'https://www.youtube.com/@aarvee_engg';
-      if (file && storyVideo) playFile(storyVideo, storyFrame, file);
-      else if (storyFrame && yt) playYoutube(storyVideo, storyFrame, yt);
+      if (storyFrame && yt) playYoutube(storyVideo, storyFrame, yt);
+      else if (file && storyVideo) playFile(storyVideo, storyFrame, file);
       root.querySelector('[data-hero-story-close]')?.focus();
     };
 
@@ -515,15 +516,7 @@
 
     const openLightbox = (id, title, blurb, sec, file) => {
       if (!lightbox || (!file && !id)) return;
-      if (file && lightboxVideo) {
-        if (frame) {
-          frame.hidden = true;
-          frame.removeAttribute('src');
-        }
-        lightboxVideo.hidden = false;
-        lightboxVideo.src = file;
-        lightboxVideo.play().catch(() => {});
-      } else if (frame && id) {
+      if (frame && id) {
         if (lightboxVideo) {
           lightboxVideo.pause();
           lightboxVideo.hidden = true;
@@ -532,6 +525,14 @@
         frame.hidden = false;
         frame.referrerPolicy = 'strict-origin-when-cross-origin';
         frame.src = youtubeEmbed(id);
+      } else if (file && lightboxVideo) {
+        if (frame) {
+          frame.hidden = true;
+          frame.removeAttribute('src');
+        }
+        lightboxVideo.hidden = false;
+        lightboxVideo.src = file;
+        lightboxVideo.play().catch(() => {});
       }
       lightbox.querySelector('[data-media-lightbox-sector]').textContent = sectorLabel[sec] || sec || '';
       lightbox.querySelector('[data-media-lightbox-title]').textContent = title || '';
