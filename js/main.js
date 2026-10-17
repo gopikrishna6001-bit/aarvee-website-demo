@@ -247,8 +247,8 @@
         video.muted = true;
         video.play().catch(() => {});
       });
-      if (video.readyState >= 2) start();
-      else video.addEventListener('canplay', start, { once: true });
+      start();
+      if (video.readyState < 2) video.addEventListener('canplay', start, { once: true });
     };
     const playYoutube = (video, frame, id) => {
       if (video) {
