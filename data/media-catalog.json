@@ -4,13 +4,13 @@
       "handle": "@aarvee_engg",
       "url": "https://www.instagram.com/aarvee_engg/",
       "reels": "https://www.instagram.com/aarvee_engg/reels/",
-      "role": "Short on-screen proof — projects, people, moments"
+      "role": "Short on-screen proof \u2014 projects, people, moments"
     },
     "youtube": {
       "handle": "@aarvee_engg",
       "url": "https://www.youtube.com/@aarvee_engg",
       "channelId": "UCO_lLLO1j4yItGAXjqvkVgA",
-      "role": "Longer films — sector explainers, values, corporate depth"
+      "role": "Longer films \u2014 sector explainers, values, corporate depth"
     }
   },
   "filters": [
@@ -52,6 +52,7 @@
       "blurb": "How Aarvee designs corridors, metros and transit systems.",
       "source": "youtube",
       "youtubeId": "Iea1lrfk19I",
+      "file": "assets/video/rail.mp4",
       "thumb": "https://i.ytimg.com/vi/Iea1lrfk19I/hqdefault.jpg",
       "tags": [
         "RailwayDesign",
@@ -63,9 +64,10 @@
       "format": "long",
       "sector": "highways",
       "title": "Highways and Bridges",
-      "blurb": "Expressways and structures — engineering built to be delivered.",
+      "blurb": "Expressways and structures \u2014 engineering built to be delivered.",
       "source": "youtube",
       "youtubeId": "_qDLPHb4kiM",
+      "file": "assets/video/highways.mp4",
       "thumb": "https://i.ytimg.com/vi/_qDLPHb4kiM/hqdefault.jpg",
       "tags": [
         "Highways",
@@ -80,6 +82,7 @@
       "blurb": "Basin-scale water resources and irrigation programmes.",
       "source": "youtube",
       "youtubeId": "7_K2m5jzjp0",
+      "file": "assets/video/water.mp4",
       "thumb": "https://i.ytimg.com/vi/7_K2m5jzjp0/hqdefault.jpg",
       "tags": [
         "Irrigation",
@@ -94,6 +97,7 @@
       "blurb": "City-scale design thinking for liveable urban systems.",
       "source": "youtube",
       "youtubeId": "sUvQYSwahFA",
+      "file": "assets/video/urban.mp4",
       "thumb": "https://i.ytimg.com/vi/sUvQYSwahFA/hqdefault.jpg",
       "tags": [
         "UrbanDesign"
@@ -104,7 +108,7 @@
       "format": "short",
       "sector": "rail",
       "title": "Railway design excellence",
-      "blurb": "Short proof of rail craft — ideal for screens and social.",
+      "blurb": "Short proof of rail craft \u2014 ideal for screens and social.",
       "source": "youtube",
       "youtubeId": "ZfdfPyIYrIA",
       "thumb": "https://i.ytimg.com/vi/ZfdfPyIYrIA/hqdefault.jpg",
@@ -132,9 +136,10 @@
       "format": "long",
       "sector": "brand",
       "title": "Corporate film",
-      "blurb": "Who Aarvee is — multidisciplinary infrastructure consulting.",
+      "blurb": "Who Aarvee is \u2014 multidisciplinary infrastructure consulting.",
       "source": "youtube",
       "youtubeId": "C64HADDvgs0",
+      "file": "assets/video/brand.mp4",
       "thumb": "https://i.ytimg.com/vi/C64HADDvgs0/hqdefault.jpg",
       "tags": [
         "Brand"
@@ -158,7 +163,7 @@
       "format": "short",
       "sector": "people",
       "title": "The Aarvee Life",
-      "blurb": "Culture on camera — easy to understand, human proof.",
+      "blurb": "Culture on camera \u2014 easy to understand, human proof.",
       "source": "youtube",
       "youtubeId": "5sfPllVJqEc",
       "thumb": "https://i.ytimg.com/vi/5sfPllVJqEc/hqdefault.jpg",
@@ -197,7 +202,7 @@
       "format": "long",
       "sector": "brand",
       "title": "10 Years of Aarvee Australia",
-      "blurb": "International delivery — real presence beyond India.",
+      "blurb": "International delivery \u2014 real presence beyond India.",
       "source": "youtube",
       "youtubeId": "0Vdu029ne1k",
       "thumb": "https://i.ytimg.com/vi/0Vdu029ne1k/hqdefault.jpg",
@@ -211,7 +216,7 @@
       "format": "short",
       "sector": "brand",
       "title": "Instagram Reels hub",
-      "blurb": "All short on-screen clips — Projects, Team, International, Media.",
+      "blurb": "All short on-screen clips \u2014 Projects, Team, International, Media.",
       "source": "instagram",
       "url": "https://www.instagram.com/aarvee_engg/reels/",
       "thumb": "assets/work-rail.jpg",

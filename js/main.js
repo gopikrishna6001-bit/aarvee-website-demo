@@ -97,17 +97,17 @@
 
     const COPY = [
       {
-        title: 'Global engineering. Indian roots.',
-        lede: 'Aarvee plans, designs and delivers public infrastructure — rail, highways, water, ports and energy — with governments and developers in more than 20 countries.',
-        tag: 'The Aarvee story',
-        story: 'A legacy built in public',
-        index: 'Since 1989 · Hyderabad',
-        youtubeId: 'C64HADDvgs0',
+        title: 'Engineering infrastructure for nations &amp; generations.',
+        lede: 'Technically robust design and end-to-end project management — engineered to perform on site.',
+        tag: 'Rail & Metro',
+        story: 'Corridors that carry nations',
+        index: '01 / 04 · Rail',
+        youtubeId: 'Iea1lrfk19I',
         metrics: [
-          { to: 4000, suffix: '+', label: 'People worldwide' },
+          { to: 4000, suffix: '+', label: 'Employees' },
+          { to: 35, suffix: '+', label: 'Years' },
           { to: 20, suffix: '+', label: 'Countries' },
-          { to: 2750, suffix: '+', label: 'Projects delivered' },
-          { text: '1989', label: 'Founded in Hyderabad' },
+          { to: 20000, suffix: ' km', label: 'Railway lines designed', format: 'km' },
         ],
       },
       {
@@ -186,11 +186,29 @@
       if (indexEl) indexEl.textContent = copy.index || '';
       if (copy.metrics) applyMetrics(copy.metrics);
       if (restart && !storyOpen && !reduceMotion) armTimer();
+      syncFilms();
+    };
+
+    const syncFilms = () => {
+      slides.forEach((slide, n) => {
+        const film = slide.querySelector('video.hero-film');
+        if (!film) return;
+        const on = n === index && !storyOpen && !reduceMotion;
+        if (!on) {
+          film.pause();
+          film.classList.remove('is-playing');
+          return;
+        }
+        film.preload = 'auto';
+        const started = film.play();
+        if (started && started.then) {
+          started.then(() => film.classList.add('is-playing')).catch(() => {});
+        }
+      });
     };
 
     const armTimer = () => {
       clearTimeout(timer);
-      if (slides.length < 2) return;
       timer = setTimeout(() => setSlide(index + 1), DURATION);
     };
 
@@ -222,7 +240,8 @@
         frame.removeAttribute('src');
       }
       video.hidden = false;
-      video.loop = true;
+      video.loop = false;
+      video.muted = false;
       video.src = file;
       const start = () => video.play().catch(() => {
         video.muted = true;
@@ -256,8 +275,9 @@
       if (storyTitle) storyTitle.textContent = (copy && copy.story) || 'Aarvee story';
       const ytLink = story.querySelector('[data-hero-story-yt]');
       if (ytLink) ytLink.href = yt ? 'https://www.youtube.com/watch?v=' + yt : 'https://www.youtube.com/@aarvee_engg';
-      if (storyFrame && yt) playYoutube(storyVideo, storyFrame, yt);
-      else if (file && storyVideo) playFile(storyVideo, storyFrame, file);
+      if (file && storyVideo) playFile(storyVideo, storyFrame, file);
+      else if (storyFrame && yt) playYoutube(storyVideo, storyFrame, yt);
+      syncFilms();
       root.querySelector('[data-hero-story-close]')?.focus();
     };
 
@@ -276,6 +296,7 @@
         storyFrame.hidden = true;
       }
       resume();
+      syncFilms();
     };
 
     root.querySelector('[data-hero-watch]')?.addEventListener('click', openStory);
@@ -516,7 +537,15 @@
 
     const openLightbox = (id, title, blurb, sec, file) => {
       if (!lightbox || (!file && !id)) return;
-      if (frame && id) {
+      if (file && lightboxVideo) {
+        if (frame) {
+          frame.hidden = true;
+          frame.removeAttribute('src');
+        }
+        lightboxVideo.hidden = false;
+        lightboxVideo.src = file;
+        lightboxVideo.play().catch(() => {});
+      } else if (frame && id) {
         if (lightboxVideo) {
           lightboxVideo.pause();
           lightboxVideo.hidden = true;
@@ -525,14 +554,6 @@
         frame.hidden = false;
         frame.referrerPolicy = 'strict-origin-when-cross-origin';
         frame.src = youtubeEmbed(id);
-      } else if (file && lightboxVideo) {
-        if (frame) {
-          frame.hidden = true;
-          frame.removeAttribute('src');
-        }
-        lightboxVideo.hidden = false;
-        lightboxVideo.src = file;
-        lightboxVideo.play().catch(() => {});
       }
       lightbox.querySelector('[data-media-lightbox-sector]').textContent = sectorLabel[sec] || sec || '';
       lightbox.querySelector('[data-media-lightbox-title]').textContent = title || '';
